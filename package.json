@@ -1,0 +1,22 @@
+{
+  "name": "btc-market-analyzer",
+  "version": "1.0.0",
+  "description": "\"Analyzes bitcoin market\"",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "Bitcoin",
+    "Market",
+    "Analyzer"
+  ],
+  "author": "Amran,Ratul",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^1.7.10"
+  },
+  "devDependencies": {
+    "electron-packager": "^10.1.1"
+  }
+}
