@@ -2,7 +2,7 @@ const https = require('https');
 const MARKETS_URL = "https://bittrex.com/api/v1.1/public/getmarkets";
 const MARKET_SUMMARIES_URL = "https://bittrex.com/api/v1.1/public/getmarketsummaries";
 const MARKET_ORDERBOOK_URL = "https://bittrex.com/api/v1.1/public/getorderbook?";
-
+const MARKET_ORDERBOOK_URL_CRYPTOPIA = "https://www.cryptopia.co.nz/api/GetMarketOrders/";
 //https://www.cryptopia.co.nz/api/GetMarketOrders/DOT_BTC
 var API = {};
 
@@ -32,47 +32,53 @@ API.getURLResponse = function(url, callback, errCallback)
   });
 }
 
-API.getMarkets = function(callback, errCallback)
+API.getMarketsBitrex = function(callback, errCallback)
 {
     API.getURLResponse(MARKETS_URL,
                        callback,
                        errCallback);
 }
 
-API.getMarketSummaries = function(callback, errCallback)
+API.getMarketSummariesBitrex = function(callback, errCallback)
 {
     API.getURLResponse(MARKET_SUMMARIES_URL,
                       callback,
                       errCallback);
 }
 
-API.getOrderBookForBid = function(marketName,
-                                  callback,
-                                  errCallback)
-{
-    API.getURLResponse(MARKET_ORDERBOOK_URL + "market="+marketName+"&type=buy",
-                       callback,
-                       errCallback);
-}
-
-API.getOrderBookForAsk = function(marketName,
+API.getOrderBookForBidBitrex = function(marketName,
                                   callback,
                                   errCallback)
 {
     API.getURLResponse(MARKET_ORDERBOOK_URL + "market="+marketName+"&type=sell",
+                       callback,
+                       errCallback);
+}
+
+API.getOrderBookForAskBitrex = function(marketName,
+                                  callback,
+                                  errCallback)
+{
+    API.getURLResponse(MARKET_ORDERBOOK_URL + "market="+marketName+"&type=buy",
     callback,
     errCallback);
 }
 
-API.getMarke
+API.getOrderBookForBidCryptopia = function(marketName, callback, errCallback)
+{
+  API.getURLResponse(MARKET_ORDERBOOK_URL_CRYPTOPIA + marketName,
+                     callback,
+                    errCallback);
+}
 
 
 
 // for node to expose functionality
 module.exports = {
-    api_resolver: API.getURLResponse,
-    api_markets : API.getMarkets,
-    api_market_summaries : API.getMarketSummaries,
-    api_orderbook_bid : API.getOrderBookForBid,
-    api_orderbook_ask : API.getOrderBookForAsk
+    api_resolver: API.getURLResponseBitrex,
+    api_markets_bitrex : API.getMarketsBitrex,
+    api_market_summaries_bitrex : API.getMarketSummariesBitrex,
+    api_orderbook_bid_bitrex : API.getOrderBookForBidBitrex,
+    api_orderbook_ask_bitrex : API.getOrderBookForAskBitrex,
+    api_orderbook_ask_cryptopia : API.getOrderBookForBidCryptopia
 }

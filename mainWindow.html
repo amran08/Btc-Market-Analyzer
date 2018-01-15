@@ -2,48 +2,50 @@
 <html>
 <head>
     <title>Bitcoin Market Analyzer</title>
-    
-  
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <style>
-      .status-bar {
+    .status-bar {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 90px;
     padding-left: 10px;
-    background-color: darkolivegreen;
-}
- #btc-worth-text{
-     text-align: center;
- }
- #order-price-text{
-     text-align: center;
- }
- #btc-worth-value{
-     text-align: center;
-     color:blue;
- }
- #order-price-value{
-     text-align: center;
-     color:red;
- }
- 
- 
- 
-
+    background-color: #BDE5F8;
+    }
+    #btc-worth-text{
+        text-align: center;
+    }
+    #order-price-text{
+        text-align: center;
+    }
+    #btc-worth-value{
+        text-align: center;
+        color:blue;
+    }
+    #order-price-value{
+        text-align: center;
+        color:red;
+    }
+    h3{
+        margin: 5px;
+        padding: 5px;
+    }
+    hr{
+        margin: 5px;
+    }
   </style>
 </head>
 <body height="400px">
     <div class="container">
             <form>
                 <div class="row">
-                    <div class='form-group col-sm-4'>
+                    <div class='col-sm-4'>
+                    <div class='form-group'>
                             <label for='market-name'>Market Name</label>
-                            <input class="form-control" type="text" value="BTC-" id="market-name">
+                            <input class="form-control" type="text" id="market-name" placeholder="DOT_BTC OR BTC_LTC">
                         </div>
-                    <div class='form-group col-sm-4'>
+                    </div>
+                    <div class="col-sm-4">
+                    <div class='form-group'>
                             <label for='market-name'>API</label>
                             <div class='form-group'>
                             <select class="form-control" id="api-end">
@@ -51,46 +53,41 @@
                                     <option id="bittrex">Bittrex</option>
                                   </select>
                                 </div>    
-                        </div>  
-                    <div class='form-group col-sm-4'>
-                        <label for='percentage'>Percentage</label>
-                        <input class="form-control" type="number" value="20" id="percentage">
+                        </div>
                     </div>
-                  
-                    <div class="col-sm-3" style='text-align:center; padding-top:16px;'>
-                        
+                    <div class="col-sm-4">
+                        <div class='form-group'>
+                            <label for='percentage'>Percentage</label>
+                            <input class="form-control" type="number" value="20" id="percentage">
+                        </div>
                     </div>
                 </div>
             </form>
-
+            <hr>
              <div class="output">
-
                 <div class="row">
                     <div class="col-sm-6">
                       <h3 id="btc-worth-text"> BTC Worth To Buy</h3>
                     </div>
                     <div class="col-sm-6">
-                            <h3 id="btc-worth-value"> 100</h3>
+                        <h3 id="order-price-text"> Order Price</h3>
                     </div>
                 </div>
-
+                
                 <div class="row">
                         <div class="col-sm-6">
-                                <h3 id="order-price-text"> Order Price</h3>
+                                <h3 id="btc-worth-value">...</h3>
                         </div>
                         <div class="col-sm-6">
-                                <h3 id="order-price-value"> 100</h3>
+                                <h3 id="order-price-value">...</h3>
                         </div>
                     </div>
                 </div>    
     </div>
-     <div id="loader" class="bit-loader">
-            <img src="assets/icons/bit-loader.gif" alt=""  class="img-responsive center-block">
-     </div>
-    <div class="status-bar">
-            <h3 id='status-text'></h3>
-        </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <div class="status-bar" id='bottom_status_bar'>
+            <h5 id='status-text' style='color:#00529B;float:left;'>Application Loaded</h5>
+            <img id='loader_img' src="./assets/loading.gif" style='display:none;float:right; height: 27px; margin:4px;'>
+    </div>
     <script>
         
         const electron = require('electron');
@@ -103,17 +100,50 @@
         const worth_btc = document.querySelector("#btc-worth-value");
         const order_price = document.querySelector("#order-price-value");
 
+        const status_bar = document.querySelector("#bottom_status_bar");
         const status = document.querySelector("#status-text");
+        const loader = document.querySelector("#loader_img");
 
         market_name.addEventListener('keypress', function (e) {
             var key = e.which || e.keyCode;
             if (key === 13) { 
-                console.log(api_end.value + ":" + market_name.value + ":" + percentage.value);
-                ipcRenderer.send("process", market_name.value, api_end.value, percentage.value);
+                updateResult();
             }
         });
+        api_end.addEventListener('change', function(e){
+            updateResult();
+        });
+        percentage.addEventListener('change', function(e)
+        {
+            updateResult();
+        });
 
-       
+        function updateResult()
+        {
+            console.log(api_end.value + ":" + market_name.value + ":" + percentage.value);
+                
+            worth_btc.innerHTML = "...";
+            order_price.innerHTML = "...";
+
+            ipcRenderer.send("process", market_name.value, api_end.value, percentage.value);
+        }
+
+
+        ipcRenderer.on("order_price", function(e, price)
+        {
+            order_price.innerHTML = price;
+            console.log(e);
+            console.log(order_price);
+        });
+
+        ipcRenderer.on("status", function(e, b_color, t_color, msg, show_loading)
+        {
+            status.innerHTML = msg;
+            status.style.color = t_color;
+            status_bar.style.background = b_color;
+            loader.style.display = show_loading ? 'initial' : 'none';
+        })
+
          
     </script>
 </body>
