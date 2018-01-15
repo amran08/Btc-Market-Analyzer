@@ -2,7 +2,7 @@ const electron = require('electron');
 const url = require('url');
 const path = require('path');
 
-const {app, BrowserWindow} = electron;
+const {app, BrowserWindow, Menu, ipcMain} = electron;
 
 const api = require('./api_resolver');
 
@@ -15,7 +15,7 @@ app.on('ready', function(){
     mainWindow = new BrowserWindow({
         width : 600,
         height : 150,
-        // resizable : false
+        resizable : false
     });
 
     // load the html file
@@ -53,8 +53,40 @@ app.on('ready', function(){
     },
     function(err){
         console.log(err);
-    })
+    });
 
-
+    let templateMenu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(templateMenu);
 });
 
+
+const menuTemplate = [
+    {
+        label: 'File',
+        submenu:[
+            {
+                label : 'Clear Fields',
+                click(){
+                    console.log("Clear fields called");
+                    mainWindow.webContents.send('clear:fields');
+                }
+            },
+            {
+                label : 'Exit',
+                click()
+                {
+                    app.exit();
+                }
+            }
+            // ,
+            // {
+            //     label: "Toggle Dev Tools",
+            //     accelerator : process.platform == "darwin" ? "Command+D" : "Ctrl+D",
+            //     click(item, focusedWindow)
+            //     {
+            //         focusedWindow.toggleDevTools();
+            //     }
+            // }
+        ]
+    }
+];
