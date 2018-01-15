@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bitcoing Market Analyzer</title>
+    <title>Bitcoin Market Analyzer</title>
     
   
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -84,32 +84,15 @@
                     </div>
                 </div>    
     </div>
+     <div id="loader" class="bit-loader">
+            <img src="assets/icons/bit-loader.gif" alt=""  class="img-responsive center-block">
+     </div>
     <div class="status-bar">
             <h3 id='status-text'></h3>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        // const electron = require('electron');
-        // const {ipcRenderer} = electron;
-
-        // let form = document.querySelector('form');
-        // let percentageF = document.querySelector("#percentage");
-        // let tabsF = document.querySelector("#tabs");
-        // let minF = document.querySelector('#min');
-
-        // ipcRenderer.on('clear:fields', function(){
-        //     minF.value = tabsF.value = percentageF.value = '';
-        // });
-
-        // form.addEventListener('submit', function(e){
-        //     e.preventDefault();
-        //     console.log("Go pressed");
-
-        //     ipcRenderer.send("go:calculate",
-        //                      percentageF.value,
-        //                      tabsF.value,
-        //                      minF.value);
-        // });
+        
         const electron = require('electron');
         const {ipcRenderer} = electron;
 
@@ -130,6 +113,8 @@
             }
         });
 
+       
+         
     </script>
 </body>
 </html>
