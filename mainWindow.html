@@ -2,54 +2,133 @@
 <html>
 <head>
     <title>Bitcoing Market Analyzer</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    
+  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <style>
+      .status-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 90px;
+    padding-left: 10px;
+    background-color: darkolivegreen;
+}
+ #btc-worth-text{
+     text-align: center;
+ }
+ #order-price-text{
+     text-align: center;
+ }
+ #btc-worth-value{
+     text-align: center;
+     color:blue;
+ }
+ #order-price-value{
+     text-align: center;
+     color:red;
+ }
+ 
+ 
+ 
+
+  </style>
 </head>
-<body>
+<body height="400px">
     <div class="container">
             <form>
                 <div class="row">
-                    <div class='form-group col-sm-3'>
+                    <div class='form-group col-sm-4'>
+                            <label for='market-name'>Market Name</label>
+                            <input class="form-control" type="text" value="BTC-" id="market-name">
+                        </div>
+                    <div class='form-group col-sm-4'>
+                            <label for='market-name'>API</label>
+                            <div class='form-group'>
+                            <select class="form-control" id="api-end">
+                                    <option id="cryptopia">Cryptopia</option>
+                                    <option id="bittrex">Bittrex</option>
+                                  </select>
+                                </div>    
+                        </div>  
+                    <div class='form-group col-sm-4'>
                         <label for='percentage'>Percentage</label>
-                        <input class="form-control" type="text" id="percentage">
+                        <input class="form-control" type="number" value="20" id="percentage">
                     </div>
-                    <div class='form-group col-sm-3'>
-                            <label for='tabs'>Tabs</label>
-                            <input class="form-control" type="text" id="tabs">                
-                    </div>
-                    <div class='form-group col-sm-3'>
-                        <label for='min'>Min</label>
-                        <input class="form-control" type="text" id="min">
-                    </div>
+                  
                     <div class="col-sm-3" style='text-align:center; padding-top:16px;'>
-                        <button class='btn btn-lg btn-primary' type="submit">Go</button>
+                        
                     </div>
                 </div>
             </form>
+
+             <div class="output">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                      <h3 id="btc-worth-text"> BTC Worth To Buy</h3>
+                    </div>
+                    <div class="col-sm-6">
+                            <h3 id="btc-worth-value"> 100</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                        <div class="col-sm-6">
+                                <h3 id="order-price-text"> Order Price</h3>
+                        </div>
+                        <div class="col-sm-6">
+                                <h3 id="order-price-value"> 100</h3>
+                        </div>
+                    </div>
+                </div>    
     </div>
+    <div class="status-bar">
+            <h3 id='status-text'></h3>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
+        // const electron = require('electron');
+        // const {ipcRenderer} = electron;
+
+        // let form = document.querySelector('form');
+        // let percentageF = document.querySelector("#percentage");
+        // let tabsF = document.querySelector("#tabs");
+        // let minF = document.querySelector('#min');
+
+        // ipcRenderer.on('clear:fields', function(){
+        //     minF.value = tabsF.value = percentageF.value = '';
+        // });
+
+        // form.addEventListener('submit', function(e){
+        //     e.preventDefault();
+        //     console.log("Go pressed");
+
+        //     ipcRenderer.send("go:calculate",
+        //                      percentageF.value,
+        //                      tabsF.value,
+        //                      minF.value);
+        // });
         const electron = require('electron');
         const {ipcRenderer} = electron;
 
-        let form = document.querySelector('form');
-        let percentageF = document.querySelector("#percentage");
-        let tabsF = document.querySelector("#tabs");
-        let minF = document.querySelector('#min');
+        const market_name = document.querySelector("#market-name");
+        const api_end = document.querySelector("#api-end");
+        const percentage = document.querySelector("#percentage");
 
-        ipcRenderer.on('clear:fields', function(){
-            minF.value = tabsF.value = percentageF.value = '';
+        const worth_btc = document.querySelector("#btc-worth-value");
+        const order_price = document.querySelector("#order-price-value");
+
+        const status = document.querySelector("#status-text");
+
+        market_name.addEventListener('keypress', function (e) {
+            var key = e.which || e.keyCode;
+            if (key === 13) { 
+                console.log(api_end.value + ":" + market_name.value + ":" + percentage.value);
+                ipcRenderer.send("process", market_name.value, api_end.value, percentage.value);
+            }
         });
-
-        form.addEventListener('submit', function(e){
-            e.preventDefault();
-            console.log("Go pressed");
-
-            ipcRenderer.send("go:calculate",
-                             percentageF.value,
-                             tabsF.value,
-                             minF.value);
-        });
-
-
 
     </script>
 </body>

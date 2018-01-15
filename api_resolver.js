@@ -2,6 +2,8 @@ const https = require('https');
 const MARKETS_URL = "https://bittrex.com/api/v1.1/public/getmarkets";
 const MARKET_SUMMARIES_URL = "https://bittrex.com/api/v1.1/public/getmarketsummaries";
 const MARKET_ORDERBOOK_URL = "https://bittrex.com/api/v1.1/public/getorderbook?";
+
+//https://www.cryptopia.co.nz/api/GetMarketOrders/DOT_BTC
 var API = {};
 
 

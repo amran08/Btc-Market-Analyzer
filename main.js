@@ -15,7 +15,7 @@ app.on('ready', function(){
     mainWindow = new BrowserWindow({
         width : 600,
         height : 150,
-        resizable : false
+        resizable : true
     });
 
     // load the html file
@@ -48,20 +48,19 @@ app.on('ready', function(){
     //     console.log(err);
     // });
 
-    api.api_markets(function(data){
-        console.log(data);
-    },
-    function(err){
-        console.log(err);
-    });
+    // api.api_markets(function(data){
+    //     console.log(data);
+    // },
+    // function(err){
+    //     console.log(err);
+    // });
 
     let templateMenu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(templateMenu);
 });
 
-ipcMain.on("go:calculate", function(evt, percentage, tabs, min)
-{
-    console.log(percentage + " " + tabs + " " + min);
+ipcMain.on("process", function(e, market, api, percentage){
+    console.log(market + " " + api + " " + percentage);
 })
 
 const menuTemplate = [
@@ -81,16 +80,20 @@ const menuTemplate = [
                 {
                     app.exit();
                 }
+            },
+
+            {
+                role: "reload"
             }
-            // ,
-            // {
-            //     label: "Toggle Dev Tools",
-            //     accelerator : process.platform == "darwin" ? "Command+D" : "Ctrl+D",
-            //     click(item, focusedWindow)
-            //     {
-            //         focusedWindow.toggleDevTools();
-            //     }
-            // }
+            ,
+            {
+                label: "Toggle Dev Tools",
+                accelerator : process.platform == "darwin" ? "Command+D" : "Ctrl+D",
+                click(item, focusedWindow)
+                {
+                    focusedWindow.toggleDevTools();
+                }
+            }
         ]
     }
 ];
