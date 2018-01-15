@@ -59,6 +59,10 @@ app.on('ready', function(){
     Menu.setApplicationMenu(templateMenu);
 });
 
+ipcMain.on("go:calculate", function(evt, percentage, tabs, min)
+{
+    console.log(percentage + " " + tabs + " " + min);
+})
 
 const menuTemplate = [
     {
