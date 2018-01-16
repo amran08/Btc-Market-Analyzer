@@ -1,5 +1,14 @@
 const api = require('./api_resolver');
-var api_key_config = require('./config.json');
+var fs = require('fs');
+
+var api_key_config;
+try {  
+    var data = fs.readFileSync('config.json', 'utf8');
+    console.log(data);
+    api_key_config = JSON.parse(data);
+} catch(e) {
+    console.log('Error:', e.stack);
+}
 
 const BITTREX_API_KEY = api_key_config.bittrex_api_key;
 const CRYPTOPIA_API_KEY = api_key_config.cryptopia_api_key;

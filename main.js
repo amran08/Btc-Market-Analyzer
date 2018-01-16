@@ -9,7 +9,6 @@ const processor = require('./data_processor');
 let mainWindow;
 let apiKeyWindow;
 
-NODE_ENV=production;
 
 // listen for app to be ready
 app.on('ready', function(){
@@ -114,7 +113,7 @@ ipcMain.on("buy:bitcoin", function(e, market_name, api_end, btc_amount, order_pr
             break;
             case processor.status_failed:
             {
-                mainWindow.webContents.send("status", "#FFD2D2","#D8000C", msg, false,false);
+                mainWindow.webContents.send("status", "#FFD2D2","#D8000C", msg, false,true);
             }
             break;
         }
@@ -127,6 +126,7 @@ const menuTemplate = [
         submenu:[
             {
                 label : 'Exit',
+                accelerator : process.platform == "darwin" ? "Command+Q" : "Ctrl+Q",
                 click()
                 {
                     app.exit();
@@ -136,15 +136,15 @@ const menuTemplate = [
             {
                 role: "reload"
             }
-            ,
-            {
-                label: "Toggle Dev Tools",
-                accelerator : process.platform == "darwin" ? "Command+D" : "Ctrl+D",
-                click(item, focusedWindow)
-                {
-                    focusedWindow.toggleDevTools();
-                }
-            }
+            // ,
+            // {
+            //     label: "Toggle Dev Tools",
+            //     accelerator : process.platform == "darwin" ? "Command+D" : "Ctrl+D",
+            //     click(item, focusedWindow)
+            //     {
+            //         focusedWindow.toggleDevTools();
+            //     }
+            // }
         ]
     }
 ];
