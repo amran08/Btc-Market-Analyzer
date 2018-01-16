@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Bitcoin Market Analyzer</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/bootstrap">
   <style>
     .status-bar {
     position: fixed;
@@ -38,13 +38,20 @@
     <div class="container">
             <form>
                 <div class="row">
-                    <div class='col-sm-4'>
-                    <div class='form-group'>
-                            <label for='market-name'>Market Name</label>
-                            <input class="form-control" type="text" id="market-name" placeholder="DOT_BTC OR BTC_LTC">
+                   
+                    <div class='col-sm-3'>
+                        <div class='form-group'>
+                                <label for='market-name'>Buy BTC Amount</label>
+                                <input class="form-control" type="text" id="btc-amount" placeholder="">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-4">
+                        <div class='col-sm-3'>
+                                <div class='form-group'>
+                                        <label for='market-name'>Market Name</label>
+                                        <input class="form-control" type="text" id="market-name" placeholder="DOT-BTC OR BTC-LTC">
+                                    </div>
+                                </div>  
+                    <div class="col-sm-3">
                     <div class='form-group'>
                             <label for='market-name'>API</label>
                             <div class='form-group'>
@@ -55,7 +62,7 @@
                                 </div>    
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class='form-group'>
                             <label for='percentage'>Percentage</label>
                             <input class="form-control" type="number" value="20" id="percentage">
@@ -66,20 +73,22 @@
             <hr>
              <div class="output">
                 <div class="row">
+                    
                     <div class="col-sm-6">
-                      <h3 id="btc-worth-text"> BTC Worth To Buy</h3>
+                        <h3 id="order-price-text">Order Price</h3>
                     </div>
                     <div class="col-sm-6">
-                        <h3 id="order-price-text"> Order Price</h3>
+                        <h3 id="order-price-text"></h3>
                     </div>
                 </div>
                 
                 <div class="row">
-                        <div class="col-sm-6">
-                                <h3 id="btc-worth-value">...</h3>
-                        </div>
+                        
                         <div class="col-sm-6">
                                 <h3 id="order-price-value">...</h3>
+                        </div>
+                        <div class="col-sm-6">
+                           <button class="btn btn-success" style="display:none;" id='buy_button'>Buy</button>
                         </div>
                     </div>
                 </div>    
@@ -94,11 +103,12 @@
         const {ipcRenderer} = electron;
 
         const market_name = document.querySelector("#market-name");
+        const btc_amount = document.querySelector("#btc-amount");
         const api_end = document.querySelector("#api-end");
         const percentage = document.querySelector("#percentage");
 
-        const worth_btc = document.querySelector("#btc-worth-value");
         const order_price = document.querySelector("#order-price-value");
+        const buy_button = document.querySelector("#buy_button");
 
         const status_bar = document.querySelector("#bottom_status_bar");
         const status = document.querySelector("#status-text");
@@ -121,8 +131,7 @@
         function updateResult()
         {
             console.log(api_end.value + ":" + market_name.value + ":" + percentage.value);
-                
-            worth_btc.innerHTML = "...";
+            
             order_price.innerHTML = "...";
 
             ipcRenderer.send("process", market_name.value, api_end.value, percentage.value);
@@ -136,13 +145,20 @@
             console.log(order_price);
         });
 
-        ipcRenderer.on("status", function(e, b_color, t_color, msg, show_loading)
+        ipcRenderer.on("status", function(e, b_color, t_color, msg, show_loading,show_buy)
         {
             status.innerHTML = msg;
             status.style.color = t_color;
             status_bar.style.background = b_color;
             loader.style.display = show_loading ? 'initial' : 'none';
+            buy_button.style.display = show_buy ? 'initial':'none'; 
         })
+
+        buy_button.addEventListener('click', function(e)
+        {
+            console.log("Buy tickled");
+            ipcRenderer.send('buy:bitcoin', market_name.value, api_end.value, btc_amount.value, order_price.innerHTML);
+        });
 
          
     </script>

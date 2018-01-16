@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Api keys</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <label for='crypto_api_key'>Cryptopia api key</label>
+                    <input type="text" id="crypto_api_key">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div>
+                    <label for='crypto_secret_key'>Cryptopia secret key</label>
+                    <input type="text" id="crypto_secret_key">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div>
+                    <label for='bittrex_api_key'>Bittrex api key</label>
+                    <input type="text" id="bittrex_api_key">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" id='save_button'>Save</button>
+    </div>
+    
+    <script>
+        
+        var crypto_api_key = document.querySelector("#crypto_api_key");
+        var crypto_secret_key = document.querySelector("#crypto_secret_key");
+        var bittrex_api_key = document.querySelector("#bittrex_api_key");
+
+        var save_btn = document.querySelector("#save_button");
+        var config = require('./config.json');
+    
+        save_btn.addEventListener('click', function()
+        {
+
+           // config.bittrex_api_key = bittrex_api_key.value
+    
+        }
+    );
+
+        
+         
+    </script>
+</body>
+</html>
