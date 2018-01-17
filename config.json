@@ -1,5 +1,6 @@
 {
   "bittrex_api_key": "",
+  "bittrex_api_secret": "",
   "cryptopia_api_key": "",
   "cryptopia_api_secret": ""
 }

@@ -11,6 +11,8 @@ try {
 }
 
 const BITTREX_API_KEY = api_key_config.bittrex_api_key;
+const BITTREX_SECRET_KEY = api_key_config.bittrex_api_secret;
+
 const CRYPTOPIA_API_KEY = api_key_config.cryptopia_api_key;
 const CRYPTOPIA_SECRET_KEY = api_key_config.cryptopia_api_secret;
 
@@ -24,7 +26,7 @@ const cryptopia = new Cryptopia(CRYPTOPIA_API_KEY, CRYPTOPIA_SECRET_KEY);
 const bittrex = require('./node.bittrex.api');
 bittrex.options({ 
   'apikey' : BITTREX_API_KEY, 
-  //'apisecret' : BITTREX_SECRET_KEY, 
+  'apisecret' : BITTREX_SECRET_KEY, 
   'stream' : false, 
   'verbose' : false, 
   'cleartext' : false 
